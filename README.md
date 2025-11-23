@@ -1,15 +1,169 @@
-🚀 ZeroBurst: The Ultimate Penetration Testing Suite (v55.0)🎯 Executive Summary & Methodology AlignmentZeroBurst represents puncak dari penelitian kerentanan dan otomatisasi. Framework Application Security Testing (AST) ini dikembangkan oleh Muhammad Lutfi Muzaki untuk mengatasi tantangan bug hunting modern. Kami mengkonsolidasikan lebih dari 55 modul spesialis ke dalam satu arsitektur yang beroperasi berdasarkan Heuristic Analysis dan Behavioral Detection.Metodologi ZeroBurst dirancang untuk mendeteksi kelemahan tingkat tinggi yang sering terlewatkan oleh Commercial Scanners, memastikan audit yang menyeluruh, sistematis, dan sesuai dengan standar PTES (Penetration Testing Execution Standard) dan OWASP Top 10.⚔️ The Full Arsenal: Module Matrix (55+ Capabilities)Arsitektur ZeroBurst dirancang dalam empat tingkatan strategis, memastikan penilaian keamanan yang bertahap dari pengumpulan informasi pasif hingga audit eksploitasi aktif.I. ATTACK SURFACE MAPPING [RECONNAISSANCE & DISCOVERY]Fokus: Identifikasi infrastruktur, konfigurasi, dan semua input yang rentan. Modul pada fase ini bersifat low-noise dan sangat berorientasi pada intelijen.CategoryFeaturesDescriptionFingerprintingTech Fingerprint (9), Header Security (1), Asset Discovery (28)Melakukan analisis mendalam menggunakan Favicon Hashing, Error Page Signatures, dan pemindaian status Cloud/CDN untuk mengungkap versi server/CMS yang tersembunyi di balik proxy.DiscoveryDeep Crawler (24), Parameter Miner (25), Secret File Hunter (29)Menggunakan Queue-based BFS (Breadth-First Search) dan Regex Mining pada JavaScript dan HTML untuk mengekstrak hidden inputs, jalur API, dan lokasi file sensitif (.env/.git).TopologyPort Scanner (2), Subdomain Hunter (18), DNS Mapping (4)Multi-threaded port scanning dengan service banner grabbing, korelasi CVE pada banner, dan resolusi DNS records (A/CNAME/MX) untuk pemetaan jaringan eksternal.SpecializedRobots.txt (5), CMS Vulnerability (30), Admin Panel Finder (50)Audit terfokus pada WP/Joomla/Drupal untuk kerentanan manifest/plugin/user enumeration, serta pencarian jalur panel administrasi yang terekspos ke publik.II. INJECTION & EXPLOITATION [HIGH SEVERITY ATTACKS]Fokus: Pengujian aktif terhadap integritas data dan potensi Remote Code Execution (RCE) menggunakan payload poliglota dan evasif.IDVulnerabilityAttack Vector FocusDeteksi Kunci & Evasion15RCECommand Injection (Blind/Reflected) dengan Evasion techniques.Time-Based Latency dan Payload Evasion (${IFS}, encoded separators) untuk melewati WAF.10SQLi HeuristicBehavioral detection of classic/blind SQL injection flaws.Analisis Anomali (Status Code, Content Length) dan Boolean Inference.46NoSQL InjectionMongoDB/CouchDB operator testing ($ne, $gt).Injeksi operator logika untuk memicu perubahan perilaku server tanpa error.17SSTI HunterServer-Side Template Injection (Jinja2, Twig).Konfirmasi eksekusi melalui Matematika Poliglot ({{7*7}} menghasilkan 49).23SSRF CloudServer-Side Request Forgery (Targeting Cloud Metadata).Menggunakan IP Obfuscation (Desimal/Oktal) dan protocol wrappers (file://, dict://).22XXE HunterXML External Entity Injection.Content-Type Spoofing untuk memaksa server memproses XML yang berpotensi LFI/SSRF.47HPP AttackHTTP Parameter Pollution.Menguji server precedence (First/Last/Concatenated) untuk bypass validasi dan override nilai.III. LOGIC, AUDIT & INFRASTRUCTURE [ADVANCED CHECKS]Fokus: Mengaudit alur otentikasi, caching, dan miskonfigurasi middleware yang kompleks.IDModule NameAudit Fokus (Methodology)Implikasi Risiko54Pwd Reset HijackHost Header Poisoning dan Token Leakage analysis pada alur reset password.Account Takeover44Logic AuditorConcurrency Testing (Race Condition), IDOR, dan analisis manipulasi parameter bisnis (harga, kuantitas).Fraud/Integrity Flaw38HTTP Smuggling**Deteksi desynchronization (CL.TE / TE.CL) menggunakan Raw Socket Time-Delay Probes.Cache Poisoning / WAF Bypass45Rate Limit CheckAudit konfigurasi Rate Limiting dengan memanipulasi header X-Forwarded-For untuk menguji bypass.Unlimited Brute-Force43Deserialization**Object Injection Detector. Pemindaian signature Java, PHP, dan Python serialized data di dalam Cookies/Headers.RCE Potential49Upload Vuln**Pemeriksaan endpoint File Upload terhadap MIME Type Spoofing dan filter ekstensi yang lemah.Malware Persistence⚙️ Usage Workflow🚀 Installation Guide (Prosedur Definitif)ZeroBurst requires Python 3.8+ and runs best within a dedicated Virtual Environment (venv).Bash# 1. Clone the repository
+🚀 ZeroBurst: The Ultimate Penetration Testing Suite (v55.0)
+
+
+
+
+
+
+
+
+🎯 Project Overview
+
+ZeroBurst is an enterprise-grade, command-line Application Security Testing (AST) framework engineered by Muhammad Lutfi Muzaki. Designed for modern offensive security workflows, ZeroBurst integrates 55+ independent modules that collectively perform deep reconnaissance, vulnerability discovery, exploitation validation, and infrastructure misconfiguration auditing.
+
+Unlike traditional scanners that rely solely on static checks, ZeroBurst emphasizes behavioral, evidence-based testing, enabling security professionals to verify real exploitability rather than surface-level warnings.
+
+The framework is optimized for:
+
+✅ Professional Penetration Testers
+✅ Red Team Operations
+✅ Security Researchers
+✅ Application Security Teams
+✅ DevSecOps Validation Pipelines
+
+ZeroBurst can scale from lightweight reconnaissance to full-spectrum exploit simulation—making it a powerful asset in both manual and automated workflows.
+
+⚔️ The Full Arsenal: Module Matrix (55+ Capabilities)
+
+ZeroBurst’s modules are grouped into four offensive tiers, representing the natural phases of a structured penetration test.
+
+I. ATTACK SURFACE MAPPING [RECONNAISSANCE & DISCOVERY]
+
+Objective: Identify technologies, endpoints, infrastructure, and weak points that form the attack entry surface.
+
+Category	Features	Description
+Fingerprinting	Tech Fingerprint (9), Header Security (1), Asset Discovery (28)	Detects underlying platforms including CMS, frameworks, servers, programming stacks, CDN layers, and evaluates critical security headers (CSP, HSTS, X-Frame-Options).
+Discovery	Deep Crawler (24), Parameter Miner (25), Secret File Hunter (29)	Parses links, forms, dynamic scripts, query parameters, API paths, and identifies sensitive exposed files (.git, backup.tar, .env, wp-config).
+Topology	Port Scanner (2), Subdomain Hunter (18), DNS Mapping (4)	Enumerates open TCP ports, identifies subdomains via brute-force dictionary + passive sources, and maps DNS/MX/NS structures.
+Specialized	Robots.txt (5), CMS Vulnerability (30), Admin Panel Finder (50)	Extracts blocked routes, identifies default CMS components, and locates potential admin entry panels for privilege targets.
+
+✅ Outcome: A complete attack blueprint of the target environment.
+
+II. INJECTION & EXPLOITATION [HIGH SEVERITY ATTACKS]
+
+Objective: Test whether user-controlled input can manipulate server behavior, escalate privileges, or execute system commands.
+
+ID	Vulnerability	Attack Vector Focus
+15	RCE	Tests command execution via payload chaining, filter evasion, and both time-based and reflective indicators.
+10	SQLi Heuristic	Detects classic, blind, boolean-based, and time-delay SQL injection patterns without requiring database metadata.
+46	NoSQL Injection	Evaluates JSON-based query manipulation using $ne, $gt, $regex, and logical operator exploitation.
+17	SSTI Hunter	Probes template engines for execution vectors that can lead to code execution (Jinja2, Twig, Velocity, FreeMarker).
+16	LFI/RFI	Attempts local and remote file access, traversal payloads, wrapper exploitation, and configuration disclosure.
+23	SSRF Cloud	Evaluates internal request routing, metadata endpoint access, and pivot paths toward AWS/GCP/Linode cloud services.
+22	XXE Hunter	Targets XML parsing weaknesses, external file requests, and SSRF chaining via entity expansion.
+48	GraphQL Injection	Performs schema introspection, field enumeration, and sensitive data exposure probing.
+47	HPP Attack	Tests parameter confusion for authentication bypass, caching anomalies, and backend misrouting.
+
+✅ Outcome: Verified exploitation potential—not just alerts.
+
+III. LOGIC, AUDIT & INFRASTRUCTURE [ADVANCED CHECKS]
+
+Objective: Identify systemic design flaws and misconfigurations often missed by traditional scanners.
+
+ID	Module Name	Audit Focus
+31	Auth & Brute-Force	Analyzes login workflows, weak credential patterns, lack of rate-limits, password policy gaps.
+44	Logic Auditor	Identifies broken access control including IDOR, race conditions, privilege escalations, and pricing abuse.
+54	Pwd Reset Hijack	Evaluates host header injection, token leakage, and recovery workflow tampering.
+38	HTTP Smuggling	Tests CL.TE / TE.CL request desync behaviors used to poison caches or bypass front-end gateways.
+40	CORS Misconfig	Audits permissive domains, wildcard rules, credential exposure, and preflight weaknesses.
+32	CVE DB Mapping	Maps detected software to known vulnerabilities for fast triage and CVE prioritization.
+27	WAF Bypass Hunter	Applies payload mutation, encoding, case shifting, and noise injection to evade filtering.
+39	Cache Poisoning	Detects unkeyed reflections vulnerable to CDN poisoning and request smuggling chains.
+49	Upload Vuln	Detects file upload bypasses through MIME spoofing, double extensions, and content-based filtering gaps.
+
+✅ Outcome: Holistic insight into application integrity and infrastructure resilience.
+
+⚙️ Usage Workflow
+
+ZeroBurst is optimized for clean, isolated execution via Python virtual environments.
+
+🚀 Installation
+
+ZeroBurst requires Python 3.8+.
+
+# 1. Clone the repository
 git clone https://github.com/MuhammadLutfiMuzakiiVY/ZeroBurst.git
 
 # 2. Setup environment and dependencies
 cd ZeroBurst
 python -m venv venv
-source venv/bin/activate 
-pip install -r requirements.txt 
+source venv/bin/activate
+pip install -r requirements.txt
 
 # 3. Run the framework
 python zeroburst.py
-🎯 Pro Mode ExecutionUntuk menjalankan seluruh rangkaian modul secara otomatis (mode produksi), masukkan 99 pada prompt:Bash(venv) $ python zeroburst.py
-...
-root@ZeroBurst:~# 99 
-ZeroBurst akan menjalankan lebih dari 20 modul secara berurutan dari Recon hingga Active Attack.⚠️ Legal & DisclaimerThis tool is strictly for AUTHORIZED PENTESTING, SECURITY AUDITS, and EDUCATIONAL USE ONLY. The developer is not responsible for any misuse of this tool.Developed by Muhammad Lutfi Muzaki - Ethical Hacking Professional
+
+⚡ Common Usage Modes
+Mode	Description
+--full-scan	Executes all 55+ modules in a sequential pipeline.
+--modules	Run specific modules for targeted testing.
+--silent	minimizes noise output for stealth scanning.
+--report	Exports results to JSON for documentation or CI pipelines.
+
+Example:
+
+python zeroburst.py --target https://example.com --full-scan
+
+✅ Recommended Workflow
+
+1️⃣ Recon & Mapping
+2️⃣ Injection & Exploitation
+3️⃣ Logic & Infra Auditing
+4️⃣ Reporting & Risk Prioritization
+
+📊 Output & Reporting
+
+ZeroBurst provides:
+
+Vulnerability classification
+
+Confidence scoring
+
+Affected endpoints
+
+Evidence-based patterns
+
+JSON export format
+
+Future versions will introduce:
+
+HTML reporting
+
+PDF export
+
+Dashboard analytics
+
+🔐 Legal & Ethical Policy
+
+ZeroBurst must only be used on systems:
+
+✅ You Own
+✅ You Manage
+✅ You Have Explicit Written Permission To Test
+
+Unauthorized testing is illegal.
+The developer assumes zero liability for misuse.
+
+👑 Author
+
+Muhammad Lutfi Muzaki
+Cybersecurity & Offensive Security Developer
+GitHub: https://github.com/MuhammadLutfiMuzakiiVY
+
+⭐ Support the Project
+
+✅ Star the repository
+✅ Share with the community
+✅ Contribute modules
+
+✅ Optional Add-Ons (Free)
+
+Saya bisa bantu buat:
+
+✅ Logo resmi ZeroBurst
+✅ ASCII CLI banner
+✅ Badges tambahan
+✅ Screenshot demo
+✅ Wiki per modul
+
+Tinggal bilang — aku siap bantu. 🚀🔥
