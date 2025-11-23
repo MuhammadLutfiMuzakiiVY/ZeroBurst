@@ -1,0 +1,14 @@
+# Abaikan folder virtual environment (Sangat Penting!)
+venv/
+env/
+
+# Abaikan file hasil compile/enkripsi
+__pycache__/
+*.pyc
+dist/
+build/
+*.spec
+
+# Abaikan file konfigurasi sistem
+.DS_Store
+.vscode/
