@@ -1,2 +1,16 @@
+# --- ZERO BURST DEPENDENCIES (FINAL LIST) ---
+# Core HTTP, UI, and Tables
 requests
+rich
 colorama
+beautifulsoup4
+
+# DNS, Network, and Infra
+dnspython
+paramiko
+
+# Advanced Security, Cryptography, and SSL/TLS
+PyJWT
+cryptography
+pyOpenSSL
+sslyze
