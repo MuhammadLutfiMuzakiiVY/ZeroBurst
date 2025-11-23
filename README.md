@@ -1,79 +1,22 @@
-# 🚀 ZeroBurst: The Ultimate Penetration Testing Suite (v55.0)
+🚀 ZeroBurst: The Ultimate Penetration Testing Suite (v55.0)🎯 Executive Summary & Methodology AlignmentZeroBurst adalah framework Application Security Testing (AST) yang dikembangkan oleh Muhammad Lutfi Muzaki. Alat ini mengkonsolidasikan lebih dari 55 modul spesialis untuk audit keamanan tingkat tinggi, berfokus pada Behavioral Analysis dan Blind Attack Vector Detection. Framework ini sangat efisien dalam menemukan kerentanan yang sering terlewatkan oleh Commercial Scanners berkat pendekatan Heuristic Analysis dan Multi-threading yang agresif.⚔️ The Full Arsenal: Module Matrix (55+ Capabilities)I. ATTACK SURFACE MAPPING [RECONNAISSANCE & DISCOVERY]Focus: Identifying infrastructure, configuration, and vulnerable inputs.CategoryFeaturesTechnical Description (In-Depth)FingerprintingTech Fingerprint (9), Header Security (1)Deep analysis menggunakan Favicon Hashing, Error Page Signature analysis, dan skor kepatuhan header keamanan.DiscoveryDeep Crawler (24), Parameter Miner (25), Secret File Hunter (29)Menggunakan BFS Queueing dan Regex Mining untuk menemukan hidden inputs, API paths, dan file sensitif (.env/.git).TopologyPort Scanner (2), Subdomain Hunter (18), Asset Discovery (28)Multi-threaded port scanning, CVE mapping, dan CNAME analysis untuk deteksi Cloud/CDN provider.SpecializedRobots.txt (5), CMS Vulnerability (30), Admin Panel Finder (50)Pemeriksaan kerentanan WP/Joomla/Drupal (User enumeration, config file checks) dan enumerasi jalur login.II. INJECTION & EXPLOITATION PRIMITIVES [HIGH SEVERITY ATTACKS]Modules designed to test the core integrity of data processing and critical server functions.VectorVulnerabilityAttack Primitive & TechniqueCritical ImpactRCECommand Injection (15), SSTI (17), Deserialization (43)Executes commands via system calls, templates, or serialized objects (Gadget Chains).Full Server CompromiseSSRF Cloud (23)Server-Side Request ForgeryTargets AWS/GCP Metadata Services (169.254.169.254) dan internal resources menggunakan IP Obfuscation.Cloud Credential TheftSQL/NoSQL (10, 46)Boolean Inference & Behavioral AnalysisMendeteksi classic/blind SQL dan NoSQL (MongoDB) flaws berdasarkan anomali respon.Database AccessAuth Bypass (54, 42)Pwd Reset Hijack, Host Header InjMemanfaatkan Host Header Poisoning untuk pengambilalihan akun dan manipulasi link.Account Takeover RiskLogic FlawsOpen Redirect (20), CSRF Hunter (21), Cache Poisoning (39)Pengujian kerentanan front-end dan logic yang bisa dimanfaatkan untuk Phishing atau DoS.Logic Flaw Abuse⚙️ Usage Workflow: Panduan Instalasi dan Eksekusi Paling LengkapIkuti langkah-langkah di bawah ini. Dokumen ini mengasumsikan Anda menggunakan Git Bash atau Terminal WSL/Ubuntu di Windows.1. Prerequisites dan Cloning AwalPastikan Git dan Python 3.8+ sudah terinstal di sistem Anda.Bash# A. CLONE REPOSITORY (Mengunduh Tools)
+git clone https://github.com/MuhammadLutfiMuzakiiVY/ZeroBurst.git
 
-[![Python](https://img.shields.io/badge/Python-3.x-blue)]()
-[![License](https://img.shields.io/badge/License-MIT-green)]()
-[![Modules](https://img.shields.io/badge/Modules-55%2B%20Active-red)]()
-[![Status](https://img.shields.io/badge/Status-FINAL%20ARCHITECT-yellow)]()
-
-## 🎯 Project Overview
-
-**ZeroBurst** is a high-performance, command-line **Application Security Testing (AST)** framework developed by Muhammad Lutfi Muzaki. It consolidates over **55 specialized modules** to efficiently map, audit, and validate the security posture of modern web applications and underlying infrastructure.
-
-The suite is designed for **Ethical Hacking Professionals** and security researchers who require deep, reliable, and automated vulnerability detection—from simple header misconfigurations to complex Server-Side Request Forgery (SSRF) and Deserialization flaws.
-
----
-
-## ⚔️ The Full Arsenal: Module Matrix (55+ Capabilities)
-
-The ZeroBurst framework organizes its capabilities into four distinct tiers, allowing focused and strategic security assessments.
-
-### I. ATTACK SURFACE MAPPING [RECONNAISSANCE & DISCOVERY]
-Focus: Identifying infrastructure, configuration, and vulnerable inputs.
-
-| Category | Features | Description |
-| :--- | :--- | :--- |
-| **Fingerprinting** | Tech Fingerprint (9), Header Security (1), Asset Discovery (28) | Identifies CMS, Web Server, Frameworks, and scores security headers. |
-| **Discovery** | Deep Crawler (24), Parameter Miner (25), Secret File Hunter (29) | Aggressively finds endpoints, hidden inputs, API paths, and exposed `.env`/`.git` files. |
-| **Topology** | Port Scanner (2), Subdomain Hunter (18), DNS Mapping (4) | Maps network ports, finds subdomains via brute-force and public DNS records. |
-| **Specialized** | Robots.txt (5), CMS Vulnerability (30), Admin Panel Finder (50) | Looks for explicit path exclusions and checks for default WP/Joomla/Drupal files. |
-
-### II. INJECTION & EXPLOITATION [HIGH SEVERITY ATTACKS]
-Focus: Testing application logic for flaws that allow unauthorized code execution or data access.
-
-| ID | Vulnerability | Attack Vector Focus |
-| :-: | :--- | :--- |
-| **15** | RCE | Command Injection (Blind/Reflected) with Evasion techniques. |
-| **10** | SQLi Heuristic | Behavioral detection of classic/blind SQL injection flaws. |
-| **46** | NoSQL Injection | MongoDB/CouchDB operator testing (`$ne`, `$gt`). |
-| **17** | SSTI Hunter | Server-Side Template Injection (Jinja2, Twig, FreeMarker) detection. |
-| **16** | LFI/RFI | Local/Remote File Inclusion (Reading `/etc/passwd` or code leak via Wrappers). |
-| **23** | SSRF Cloud | Server-Side Request Forgery (Targeting AWS/GCP Metadata & internal resources). |
-| **22** | XXE Hunter | XML External Entity Injection (File Read via XML parser). |
-| **48** | GraphQL Injection | Introspection Attack to dump database schema. |
-| **47** | HPP Attack | HTTP Parameter Pollution (Testing server precedence/concatenation). |
-
-### III. LOGIC, AUDIT & INFRASTRUCTURE [ADVANCED CHECKS]
-Focus: Auditing authentication flows, caching mechanisms, and system misconfigurations.
-
-| ID | Module Name | Audit Focus |
-| :-: | :--- | :--- |
-| **31** | Auth & Brute-Force | Weak Password Dictionary Check & Login Form Analysis. |
-| **44** | Logic Auditor | Testing for IDOR, Race Conditions, and price tampering. |
-| **54** | Pwd Reset Hijack | Host Header Poisoning & Token Leakage in Password Reset Flow. |
-| **38** | HTTP Smuggling | Checks for CL.TE / TE.CL desynchronization using time-delay. |
-| **40** | CORS Misconfig | Audits strictness of Cross-Origin Resource Sharing policy. |
-| **32** | CVE DB Mapping | Maps detected services to known high-profile Common Vulnerabilities and Exposures. |
-| **27** | WAF Bypass Hunter | Automated payload mutation against blocking status codes (403/406). |
-| **39** | Cache Poisoning | Unkeyed Input Reflection Analysis (Front-End/CDN Vulnerability). |
-| **49** | Upload Vuln | Checks File Upload Endpoints for extension filtering weaknesses. |
-
----
-
-## ⚙️ Usage Workflow
-
-### 🚀 Installation
-
-ZeroBurst requires Python 3.8+ and runs best within a dedicated Virtual Environment (`venv`).
-
-```bash
-# 1. Clone the repository
-git clone [https://github.com/MuhammadLutfiMuzakiiVY/ZeroBurst.git](https://github.com/MuhammadLutfiMuzakiiVY/ZeroBurst.git)
-
-# 2. Setup environment and dependencies
+# B. PINDAH DIREKTORI
 cd ZeroBurst
-python -m venv venv
-source venv/bin/activate 
-pip install -r requirements.txt 
+2. Setup Lingkungan Virtual (VENV) - WajibLangkah ini adalah kunci portabilitas dan keamanan ZeroBurst, memastikan semua library (seperti Paramiko, Cryptography) terisolasi.Bash# A. BUAT LINGKUNGAN VENV
+python3 -m venv venv
 
-# 3. Run the framework
-python zeroburst.py
+# B. AKTIVASI VENV (Sangat Penting!)
+#    (Pilih command sesuai OS Anda)
+
+#    > Jika menggunakan WSL/Linux:
+source venv/bin/activate 
+
+#    > Jika menggunakan Windows CMD/PowerShell:
+.\venv\Scripts\activate
+3. Instalasi Dependensi Lengkap (55+ Fitur)Setelah venv aktif, instal semua dependensi yang dibutuhkan oleh 55 modul tersebut.Bash# Perhatikan: (venv) di depan prompt menunjukkan lingkungan aktif
+(venv) $ pip install -r requirements.txt
+4. Eksekusi Framework dan PengujianZeroBurst akan meluncurkan tampilan animasi TUI (Text User Interface).Bash# Eksekusi file utama
+(venv) $ python zeroburst.py
+Penggunaan Fitur Ultimate Scan (Mode Produksi)Untuk menjalankan seluruh rangkaian modul Recon dan Vulnerability (yang paling profesional), masukkan 99 pada prompt:Bashroot@ZeroBurst:~# 99
+Tools akan menjalankan 7 fase Recon, meminta konfirmasi, lalu menjalankan 13 modul serangan lanjutan.⚠️ Legal & DisclaimerThis tool is strictly for AUTHORIZED PENTESTING, SECURITY AUDITS, and EDUCATIONAL USE ONLY. The developer stresses the absolute necessity of obtaining explicit, written permission before scanning any system. Misuse of this tool may lead to serious legal consequences.Developed by Muhammad Lutfi Muzaki - Ethical Hacking Professional
